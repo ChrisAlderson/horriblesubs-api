@@ -13,6 +13,7 @@ module.exports = class HorribleSubsAPI {
     this.request = req.defaults(options);
     this.debug = debug;
 
+    // TODO: add more anime to this map.
     this.horribleSubsMap = {
       "91-days": "ninety-one-days",
       "ace-of-diamond": "diamond-no-ace",
