@@ -15,23 +15,58 @@ npm install --save horriblesubs-api
 
 #### Initialize
 ```js
-const HorribleSubsAPI = require("../horriblesubs-api");
+const HorribleSubsAPI = require("horriblesubs-api");
 
-// Create an instance of the API wrapper.
+// Options are the request default options.
 const horriblesubsAPI = new HorribleSubsAPI({[options, debug]});
 ```
 
 #### Example usage
 ```js
-// Get all available shows on eztv.
+// Get all available shows on horriblesubs.
 horriblesubsAPI.getAllAnime().then(res => {
   const data = res[0];
   console.log(data);
 
-  // Get data including episodes from eztv.
+  // Get data including episodes from horriblesubs.
   horriblesubsAPI.getAnimeData(data)
     .then(res => console.log(res));
 }).catch(err => console.error(err));
+```
+
+## Output
+
+#### getAllAnime
+```js
+[{
+  link: "/shows/91-days",
+  slug: "91-days",
+  title: "91 Days"
+}, {
+  link: "/shows/absolute-duo",
+  slug: "absolute-duo",
+  title: "Absolute Duo"
+}, ...]
+```
+
+#### getAnimeData
+```js
+{ link: "/shows/91-days",
+  slug: "ninety-one-days",
+  title: "91 Days",
+  hs_showid: "731",
+  episodes:
+   { "1":
+      { "1":
+        { "480":
+          { url: "magnet:?xt=urn:btih:AYIJKPLP5WVVF36O25JBB3FFPNJEBBPQ&tr=http://open.nyaatorrents.info:6544/announce&tr=udp://tracker.openbittorrent.com:80/announce&tr=udp://tracker.coppersurfer.tk:6969/announce",
+          seeds: 0,
+          peers: 0,
+          provider: "HorribleSubs" } },
+        ...
+      }
+    }
+}
 ```
 
 # License
