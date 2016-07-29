@@ -1,7 +1,7 @@
 // Import the neccesary modules.
 const HorribleSubsAPI = require("../horriblesubs-api");
 
-const horriblesubsAPI = new HorribleSubsAPI(undefined, false);
+const horriblesubsAPI = new HorribleSubsAPI();
 
 // Get all available shows on horriblesubs.
 horriblesubsAPI.getAllAnime().then(res => {

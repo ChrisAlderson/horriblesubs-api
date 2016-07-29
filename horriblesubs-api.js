@@ -9,7 +9,7 @@ const defaultOptions = {
 
 module.exports = class HorribleSubsAPI {
 
-  constructor(options = defaultOptions, debug = false) {
+  constructor({options = defaultOptions, debug = false} = {}) {
     this.request = req.defaults(options);
     this.debug = debug;
 
