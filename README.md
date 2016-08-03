@@ -1,6 +1,6 @@
 # horriblesubs-api
 
-[![Build Status](https://travis-ci.org/ChrisAlderson/horriblesubs-api.svg?branch=master)]()
+[![Build Status](https://travis-ci.org/ChrisAlderson/horriblesubs-api.svg?branch=master)](https://travis-ci.org/ChrisAlderson/horriblesubs-api)
 [![Dependency Status](https://david-dm.org/ChrisAlderson/horriblesubs-api.svg)](https://david-dm.org/ChrisAlderson/horriblesubs-api)
 [![devDependency Status](https://david-dm.org/ChrisAlderson/horriblesubs-api/dev-status.svg)](https://david-dm.org/ChrisAlderson/horriblesubs-api#info=devDependencies)
 
