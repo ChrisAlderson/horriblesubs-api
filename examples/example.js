@@ -1,3 +1,5 @@
+"use strict";
+
 // Import the neccesary modules.
 const HorribleSubsAPI = require("../horriblesubs-api");
 
