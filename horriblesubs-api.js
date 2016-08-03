@@ -1,3 +1,5 @@
+"use strict";
+
 const asyncq = require("async-q");
 const cheerio = require("cheerio");
 const req = require("request");
