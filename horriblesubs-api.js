@@ -293,17 +293,17 @@ module.exports = class HorribleSubsAPI {
               provider: "HorribleSubs"
             }
 
+            const season = 1;
+
             const seasonal = /(.*).[Ss](\d)\s-\s(\d+).\[(\d{3,4}p)\]/i;
             const oneSeason = /(.*)\s-\s(\d+).\[(\d{3,4}p)\]/i;
-            let slug, season, episode, quality;
+            let slug, episode, quality;
             if (label.match(seasonal)) {
               data.slug = label.match(seasonal)[1].replace(/[,!]/gi, "").replace(/\s-\s/gi, " ").replace(/[\+\s\']/g, "-").toLowerCase();
-              season = parseInt(label.match(seasonal)[2], 10);
               episode = parseInt(label.match(seasonal)[3], 10);
               quality = label.match(seasonal)[4];
             } else if (label.match(oneSeason)) {
               data.slug = label.match(oneSeason)[1].replace(/[,!]/gi, "").replace(/\s-\s/gi, " ").replace(/[\+\s\']/g, "-").toLowerCase();
-              season = 1;
               episode = parseInt(label.match(oneSeason)[2], 10);
               quality = label.match(oneSeason)[3];
             }
