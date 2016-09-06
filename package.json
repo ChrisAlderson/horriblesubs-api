@@ -1,6 +1,6 @@
 {
   "name": "horriblesubs-api",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A horriblesubs.info API wrapper for NodeJS.",
   "dependencies": {
     "async-q": "^0.3.1",
