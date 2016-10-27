@@ -3,6 +3,7 @@
 const asyncq = require("async-q");
 const cheerio = require("cheerio");
 const req = require("request");
+const cloudscraper = require("cloudscraper");
 
 const defaultOptions = {
   "baseUrl": "http://horriblesubs.info",
@@ -11,8 +12,17 @@ const defaultOptions = {
 
 module.exports = class HorribleSubsAPI {
 
-  constructor({options = defaultOptions, debug = false} = {}) {
-    this.request = req.defaults(options);
+  constructor({options = defaultOptions, debug = false, cloudflare = false} = {}) {
+    if (cloudflare) {
+      this.cloudflare = true;
+      this.request = cloudscraper.request;
+      this.options = options;
+      if (debug) {
+        console.warn("Processing with cloudscraper...");
+      }
+    } else {
+      this.request = req.defaults(options).get;
+    }
     this.debug = debug;
 
     this.horribleSubsMap = {
@@ -219,7 +229,14 @@ module.exports = class HorribleSubsAPI {
   get(uri, qs, retry = true) {
     if (this.debug) console.warn(`Making request to: '${uri}'`);
     return new Promise((resolve, reject) => {
-      this.request.get({ uri, qs }, (err, res, body) => {
+      let options;
+      if (this.cloudflare) {
+        options = Object.assign({}, this.options, {method: 'GET', url: this.options.baseUrl + uri, qs});
+        options.baseUrl = null;
+      } else {
+        options = { uri, qs };
+      }
+      this.request(options, (err, res, body) => {
         if (err && retry) {
           return resolve(this.get(uri, qs, false));
         } else if (err) {

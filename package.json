@@ -5,6 +5,7 @@
   "dependencies": {
     "async-q": "^0.3.1",
     "cheerio": "^0.22.0",
+    "cloudscraper": "^1.4.0",
     "request": "^2.74.0"
   },
   "devDependencies": {
