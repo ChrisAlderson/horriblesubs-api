@@ -8,7 +8,9 @@ describe("HorribleSubs", () => {
 
   let horriblesubsAPI, data;
   before(() => {
-    horriblesubsAPI = new HorribleSubsAPI();
+    horriblesubsAPI = new HorribleSubsAPI({
+      cloudflare: true
+    });
     data = {
       link: "/shows/one-piece",
       slug: "one-piece",
