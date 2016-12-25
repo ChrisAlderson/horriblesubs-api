@@ -14,18 +14,18 @@ module.exports = class HorribleSubsAPI {
 
   constructor({options = defaultOptions, debug = false, cloudflare = false} = {}) {
     if (cloudflare) {
-      this.cloudflare = true;
-      this.request = cloudscraper.request;
-      this.options = options;
+      this._cloudflare = true;
+      this._request = cloudscraper.request;
+      this._options = options;
       if (debug) {
         console.warn('Processing with cloudscraper...');
       }
     } else {
-      this.request = req.defaults(options).get;
+      this._request = req.defaults(options).get;
     }
-    this.debug = debug;
+    this._debug = debug;
 
-    this.horribleSubsMap = {
+    this._horribleSubsMap = {
       '91-days': 'ninety-one-days',
       'ace-attorney': 'gyakuten-saiban',
       'ace-of-diamond': 'diamond-no-ace',
@@ -227,16 +227,16 @@ module.exports = class HorribleSubsAPI {
   }
 
   _get(uri, qs, retry = true) {
-    if (this.debug) console.warn(`Making request to: '${uri}'`);
+    if (this._debug) console.warn(`Making request to: '${uri}'`);
     return new Promise((resolve, reject) => {
       let options;
-      if (this.cloudflare) {
-        options = Object.assign({}, this.options, {method: 'GET', url: this.options.baseUrl + uri, qs});
+      if (this._cloudflare) {
+        options = Object.assign({}, this._options, {method: 'GET', url: this._options.baseUrl + uri, qs});
         options.baseUrl = null;
       } else {
         options = { uri, qs };
       }
-      this.request(options, (err, res, body) => {
+      this._request(options, (err, res, body) => {
         if (err && retry) {
           return resolve(this._get(uri, qs, false));
         } else if (err) {
@@ -280,7 +280,7 @@ module.exports = class HorribleSubsAPI {
       let page = 0;
 
       data.episodes = {};
-      const horribleSubsMap = this.horribleSubsMap;
+      const horribleSubsMap = this._horribleSubsMap;
 
       return asyncq.whilst(() => busy, () => {
         const qs = {
