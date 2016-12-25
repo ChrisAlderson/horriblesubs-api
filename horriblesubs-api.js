@@ -224,7 +224,7 @@ module.exports = class HorribleSubsAPI {
       'zero-no-tsukaima-final': 'zero-no-tsukaima-f',
       'zx-ignition': 'z-x-ignition'
     };
-  };
+  }
 
   get(uri, qs, retry = true) {
     if (this.debug) console.warn(`Making request to: '${uri}'`);
@@ -248,7 +248,7 @@ module.exports = class HorribleSubsAPI {
         }
       });
     });
-  };
+  }
 
   getAllAnime() {
     return this.get('/shows/').then($ => {
@@ -262,7 +262,7 @@ module.exports = class HorribleSubsAPI {
       });
       return anime;
     });
-  };
+  }
 
   getAnimeId(data) {
     return this.get(data.link).then($ => {
@@ -272,7 +272,7 @@ module.exports = class HorribleSubsAPI {
       data.hs_showid = JSON.parse(chopFront.substring(0, chopFront.search(';')));
       return data;
     });
-  };
+  }
 
   getAnimeData(data) {
     return this.getAnimeId(data).then(res => {
@@ -308,7 +308,7 @@ module.exports = class HorribleSubsAPI {
               seeds: 0,
               peers: 0,
               provider: 'HorribleSubs'
-            }
+            };
 
             const season = 1;
 
@@ -338,6 +338,6 @@ module.exports = class HorribleSubsAPI {
         });
       }).then(value => data);
     });
-  };
+  }
 
-};
+}
