@@ -2,8 +2,8 @@
 
 const asyncq = require('async-q');
 const cheerio = require('cheerio');
-const req = require('request');
 const cloudscraper = require('cloudscraper');
+const request = require('request');
 
 const defaultOptions = {
   'baseUrl': 'http://horriblesubs.info',
@@ -21,7 +21,7 @@ module.exports = class HorribleSubsAPI {
         console.warn('Processing with cloudscraper...');
       }
     } else {
-      this._request = req.defaults(options).get;
+      this._request = request.defaults(options).get;
     }
     this._debug = debug;
 
