@@ -21,7 +21,7 @@ module.exports = class HorribleSubsAPI {
         console.warn('Processing with cloudscraper...');
       }
     } else {
-      this._request = request.defaults(options).get;
+      this._request = request.defaults(options);
     }
     this._debug = debug;
 
