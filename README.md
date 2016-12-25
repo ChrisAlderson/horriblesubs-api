@@ -18,7 +18,7 @@ npm install --save horriblesubs-api
 const HorribleSubsAPI = require('horriblesubs-api');
 
 // Options are the request default options.
-const horriblesubsAPI = new HorribleSubsAPI({[options, debug]});
+const horriblesubsAPI = new HorribleSubsAPI({[options, debug, cloudflare]});
 ```
 
 #### Example usage
