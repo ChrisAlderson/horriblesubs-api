@@ -226,7 +226,7 @@ module.exports = class HorribleSubsAPI {
     };
   }
 
-  get(uri, qs, retry = true) {
+  _get(uri, qs, retry = true) {
     if (this.debug) console.warn(`Making request to: '${uri}'`);
     return new Promise((resolve, reject) => {
       let options;
@@ -238,7 +238,7 @@ module.exports = class HorribleSubsAPI {
       }
       this.request(options, (err, res, body) => {
         if (err && retry) {
-          return resolve(this.get(uri, qs, false));
+          return resolve(this._get(uri, qs, false));
         } else if (err) {
           return reject(err);
         } else if (!body || res.statusCode >= 400) {
@@ -251,7 +251,7 @@ module.exports = class HorribleSubsAPI {
   }
 
   getAllAnime() {
-    return this.get('/shows/').then($ => {
+    return this._get('/shows/').then($ => {
       const anime = [];
       $('div.ind-show.linkful').map(function () {
         const entry = $(this).find('a');
@@ -264,8 +264,8 @@ module.exports = class HorribleSubsAPI {
     });
   }
 
-  getAnimeId(data) {
-    return this.get(data.link).then($ => {
+  _getAnimeId(data) {
+    return this._get(data.link).then($ => {
       const variable = 'var hs_showid =';
       const text = $('script').text();
       const chopFront = text.substring(text.search(variable) + variable.length, text.length);
@@ -275,7 +275,7 @@ module.exports = class HorribleSubsAPI {
   }
 
   getAnimeData(data) {
-    return this.getAnimeId(data).then(res => {
+    return this._getAnimeId(data).then(res => {
       let busy = true;
       let page = 0;
 
@@ -289,7 +289,7 @@ module.exports = class HorribleSubsAPI {
           nextid: page
         };
 
-        return this.get('/lib/getshows.php', qs).then($ => {
+        return this._get('/lib/getshows.php', qs).then($ => {
           const table = $('table.release-table');
 
           if (table.length === 0) {
