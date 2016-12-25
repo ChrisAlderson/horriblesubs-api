@@ -12,7 +12,7 @@ const defaultOptions = {
 
 module.exports = class HorribleSubsAPI {
 
-  constructor({options = defaultOptions, debug = false, cloudflare = false} = {}) {
+  constructor({options = defaultOptions, debug = false, cloudflare = true} = {}) {
     if (cloudflare) {
       this._cloudflare = true;
       this._request = cloudscraper.request;
