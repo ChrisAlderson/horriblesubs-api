@@ -312,8 +312,8 @@ module.exports = class HorribleSubsAPI {
 
             const season = 1;
 
-            const seasonal = /(.*).[Ss](\d)\s-\s(\d+).\[(\d{3,4}p)\]/i;
-            const oneSeason = /(.*)\s-\s(\d+).\[(\d{3,4}p)\]/i;
+            const seasonal = /(.*).[Ss](\d)\s-\s(\d+)(?:v\d)?.\[(\d{3,4}p)\]/i;
+            const oneSeason = /(.*)\s-\s(\d+)(?:v\d)?.\[(\d{3,4}p)\]/i;
             let slug, episode, quality;
             if (label.match(seasonal)) {
               data.slug = label.match(seasonal)[1].replace(/[,!]/gi, '').replace(/\s-\s/gi, ' ').replace(/[\+\s\']/g, '-').toLowerCase();
