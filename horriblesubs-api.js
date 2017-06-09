@@ -2,30 +2,16 @@
 
 const asyncq = require('async-q');
 const cheerio = require('cheerio');
-const cloudscraper = require('cloudscraper');
-const request = require('request');
-
-const defaultOptions = {
-  'baseUrl': 'http://horriblesubs.info',
-  'timeout': 3 * 1000
-};
+const got = require('got');
+const querystring = require('querystring');
 
 module.exports = class HorribleSubsAPI {
 
-  constructor({options = defaultOptions, debug = false, cloudflare = true} = {}) {
-    if (cloudflare) {
-      this._cloudflare = true;
-      this._request = cloudscraper.request;
-      this._options = options;
-      if (debug) {
-        console.warn('Processing with cloudscraper...');
-      }
-    } else {
-      this._request = request.defaults(options);
-    }
+  constructor({baseUrl = 'http://horriblesubs.info', debug = false, } = {}) {
+    this._baseUrl = baseUrl;
     this._debug = debug;
 
-    this._horribleSubsMap = {
+    HorribleSubsAPI._horribleSubsMap = {
       '91-days': 'ninety-one-days',
       'ace-attorney': 'gyakuten-saiban',
       'ace-of-diamond': 'diamond-no-ace',
@@ -226,28 +212,12 @@ module.exports = class HorribleSubsAPI {
     };
   }
 
-  _get(uri, qs, retry = true) {
-    if (this._debug) console.warn(`Making request to: '${uri}'`);
-    return new Promise((resolve, reject) => {
-      let options;
-      if (this._cloudflare) {
-        options = Object.assign({}, this._options, {method: 'GET', url: this._options.baseUrl + uri, qs});
-        options.baseUrl = null;
-      } else {
-        options = { uri, qs };
-      }
-      this._request(options, (err, res, body) => {
-        if (err && retry) {
-          return resolve(this._get(uri, qs, false));
-        } else if (err) {
-          return reject(err);
-        } else if (!body || res.statusCode >= 400) {
-          return reject(new Error(`No data found with url: '${uri}', statusCode: ${res.statusCode}`));
-        } else {
-          return resolve(cheerio.load(body));
-        }
-      });
-    });
+  _get(uri, query = {}) {
+    if (this._debug)
+      console.warn(`Making request to: '${uri}${querystring.stringify(query)}'`);
+
+    return got.get(`${this._baseUrl}/${uri}`, { query })
+      .then(({body}) => cheerio.load(body));
   }
 
   getAllAnime() {
@@ -280,7 +250,7 @@ module.exports = class HorribleSubsAPI {
       let page = 0;
 
       data.episodes = {};
-      const horribleSubsMap = this._horribleSubsMap;
+      const horribleSubsMap = HorribleSubsAPI._horribleSubsMap;
 
       return asyncq.whilst(() => busy, () => {
         const qs = {
