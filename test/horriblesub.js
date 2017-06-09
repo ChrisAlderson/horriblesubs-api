@@ -1,7 +1,6 @@
 'use strict';
 
-const chai = require('chai');
-const assert = chai.assert;
+const { assert } = require('chai');
 const HorribleSubsAPI = require('../horriblesubs-api');
 
 describe('HorribleSubs', () => {
