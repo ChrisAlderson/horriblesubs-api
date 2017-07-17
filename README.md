@@ -15,23 +15,23 @@ npm install --save horriblesubs-api
 
 #### Initialize
 ```js
-const HorribleSubsAPI = require('horriblesubs-api');
+const HorribleSubsAPI = require('horriblesubs-api')
 
 // Options are the request default options.
-const horriblesubsAPI = new HorribleSubsAPI({[options, debug, cloudflare]});
+const horriblesubsAPI = new HorribleSubsAPI({[options, debug, cloudflare]})
 ```
 
 #### Example usage
 ```js
 // Get all available shows on horriblesubs.
 horriblesubsAPI.getAllAnime().then(res => {
-  const data = res[0];
-  console.log(data);
+  const data = res[0]
+  console.log(data)
 
   // Get data including episodes from horriblesubs.
   horriblesubsAPI.getAnimeData(data)
-    .then(res => console.log(res));
-}).catch(err => console.error(err));
+    .then(res => console.log(res))
+}).catch(err => console.error(err))
 ```
 
 ## Output
@@ -73,7 +73,7 @@ horriblesubsAPI.getAllAnime().then(res => {
 
 MIT License
 
-Copyright (c) 2016 - horriblesubs-api - Released under the MIT license.
+Copyright (c) 2017 - horriblesubs-api - Released under the MIT license.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
