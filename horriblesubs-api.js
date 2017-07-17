@@ -1,15 +1,15 @@
-'use strict';
+'use strict'
 
-const asyncq = require('async-q');
-const cheerio = require('cheerio');
-const got = require('got');
-const querystring = require('querystring');
+const asyncq = require('async-q')
+const cheerio = require('cheerio')
+const got = require('got')
+const querystring = require('querystring')
 
 module.exports = class HorribleSubsAPI {
 
-  constructor({baseUrl = 'http://horriblesubs.info', debug = false, } = {}) {
-    this._baseUrl = baseUrl;
-    this._debug = debug;
+  constructor({baseUrl = 'http://horriblesubs.info', debug = false} = {}) {
+    this._baseUrl = baseUrl
+    this._debug = debug
 
     HorribleSubsAPI._horribleSubsMap = {
       '91-days': 'ninety-one-days',
@@ -130,7 +130,7 @@ module.exports = class HorribleSubsAPI {
       'poyopoyo': 'poyopoyo-kansatsu-nikki',
       'puzzle-and-dragons-cross': 'puzzle-dragons-x',
       'ro-kyu-bu-fast-break': 'ro-kyu-bu',
-      'robotics;notes': 'robotics-notes',
+      'roboticsnotes': 'robotics-notes',
       'rowdy-sumo-wrestler-matsutaro': 'abarenbou-kishi-matsutarou',
       'rozen-maiden-(2013)': 'rozen-maiden-zuruckspulen',
       'ryuugajou-nanana-no-maizoukin': 'ryuugajou-nanana-no-maizoukin-tv',
@@ -162,7 +162,7 @@ module.exports = class HorribleSubsAPI {
       'space-brothers': 'uchuu-kyoudai',
       'space-dandy-2': 'space-dandy-2nd-season',
       'space-patrol-luluco': 'uchuu-patrol-luluco',
-      'steins;gate': 'steins-gate',
+      'steinsgate': 'steins-gate',
       'stella-jogakuin-koutouka-c3-bu': 'stella-jogakuin-koutou-ka-c-bu',
       'straight-title-robot-anime': 'chokkyuu-hyoudai-robot-anime-straight-title',
       'strange-': 'strange',
@@ -209,105 +209,127 @@ module.exports = class HorribleSubsAPI {
       'yuushibu': 'yuusha-ni-narenakatta-ore-wa-shibushibu-shuushoku-wo-ketsui-shimashita',
       'zero-no-tsukaima-final': 'zero-no-tsukaima-f',
       'zx-ignition': 'z-x-ignition'
-    };
+    }
   }
 
   _get(uri, query = {}) {
-    if (this._debug)
-      console.warn(`Making request to: '${uri}${querystring.stringify(query)}'`);
+    if (this._debug) {
+      console.warn(`Making request to: '${uri}${querystring.stringify(query)}'`)
+    }
 
     return got.get(`${this._baseUrl}/${uri}`, { query })
-      .then(({body}) => cheerio.load(body));
+      .then(({body}) => cheerio.load(body))
   }
 
   getAllAnime() {
     return this._get('/shows/').then($ => {
-      const anime = [];
+      const anime = []
       $('div.ind-show.linkful').map(function () {
-        const entry = $(this).find('a');
+        const entry = $(this).find('a')
         anime.push({
-          link: entry.attr('href'), slug: entry.attr('href').match(/\/shows\/(.*)/i)[1],
+          link: entry.attr('href'),
+          slug: entry.attr('href').match(/\/shows\/(.*)/i)[1],
           title: entry.attr('title')
-        });
-      });
-      return anime;
-    });
+        })
+      })
+      return anime
+    })
   }
 
   _getAnimeId(data) {
     return this._get(data.link).then($ => {
-      const variable = 'var hs_showid =';
-      const text = $('script').text();
-      const chopFront = text.substring(text.search(variable) + variable.length, text.length);
-      data.hs_showid = JSON.parse(chopFront.substring(0, chopFront.search(';')));
-      return data;
-    });
+      const variable = 'var hs_showid = '
+      const text = $('div.entry-content').find('script').html()
+      const chopFront = text.substring(
+        text.search(variable) + variable.length, text.length
+      )
+      data.hs_showid = JSON.parse(chopFront.substring(0, chopFront.search(';')))
+      return data
+    })
   }
 
   getAnimeData(data) {
     return this._getAnimeId(data).then(res => {
-      let busy = true;
-      let page = 0;
+      let busy = true
+      let page = 0
 
-      data.episodes = {};
-      const horribleSubsMap = HorribleSubsAPI._horribleSubsMap;
+      data.episodes = {}
+      const horribleSubsMap = HorribleSubsAPI._horribleSubsMap
 
       return asyncq.whilst(() => busy, () => {
         const qs = {
           type: 'show',
           showid: res.hs_showid,
           nextid: page
-        };
+        }
 
         return this._get('/lib/getshows.php', qs).then($ => {
-          const table = $('table.release-table');
+          const table = $('table.release-table')
 
           if (table.length === 0) {
-            busy = false;
-            return data;
+            busy = false
+            return data
           }
 
           table.each(function () {
-            const entry = $(this);
+            const entry = $(this)
 
-            const label = entry.find('td.dl-label').text();
-            const magnet = entry.find('td.dl-type.hs-magnet-link').find('a').attr('href');
+            const label = entry.find('td.dl-label').text()
+            const magnet = entry.find('td.dl-type.hs-magnet-link')
+              .find('a')
+              .attr('href')
 
             const torrent = {
               url: magnet,
               seeds: 0,
               peers: 0,
               provider: 'HorribleSubs'
-            };
+            }
 
-            const season = 1;
+            const season = 1
 
-            const seasonal = /(.*).[Ss](\d)\s-\s(\d+)(?:v\d)?.\[(\d{3,4}p)\]/i;
-            const oneSeason = /(.*)\s-\s(\d+)(?:v\d)?.\[(\d{3,4}p)\]/i;
-            let slug, episode, quality;
+            const seasonal = /(.*).[Ss](\d)\s-\s(\d+)(?:v\d)?.\[(\d{3,4}p)\]/i
+            const oneSeason = /(.*)\s-\s(\d+)(?:v\d)?.\[(\d{3,4}p)\]/i
+            let episode, quality
             if (label.match(seasonal)) {
-              data.slug = label.match(seasonal)[1].replace(/[,!]/gi, '').replace(/\s-\s/gi, ' ').replace(/[\+\s\']/g, '-').toLowerCase();
-              episode = parseInt(label.match(seasonal)[3], 10);
-              quality = label.match(seasonal)[4];
+              data.slug = label.match(seasonal)[1].replace(/[,!]/gi, '')
+                .replace(/\s-\s/gi, ' ')
+                .replace(/[+\s']/g, '-')
+                .toLowerCase()
+              episode = parseInt(label.match(seasonal)[3], 10)
+              quality = label.match(seasonal)[4]
             } else if (label.match(oneSeason)) {
-              data.slug = label.match(oneSeason)[1].replace(/[,!]/gi, '').replace(/\s-\s/gi, ' ').replace(/[\+\s\']/g, '-').toLowerCase();
-              episode = parseInt(label.match(oneSeason)[2], 10);
-              quality = label.match(oneSeason)[3];
+              data.slug = label.match(oneSeason)[1].replace(/[,!]/gi, '')
+                .replace(/\s-\s/gi, ' ')
+                .replace(/[+\s']/g, '-')
+                .toLowerCase()
+              episode = parseInt(label.match(oneSeason)[2], 10)
+              quality = label.match(oneSeason)[3]
             }
 
-            data.slug = data.slug in horribleSubsMap ? horribleSubsMap[data.slug] : data.slug;
+            data.slug = data.slug in horribleSubsMap
+              ? horribleSubsMap[data.slug]
+              : data.slug
             if (season && episode && quality && quality !== '360p') {
-              if (!data.episodes[season]) data.episodes[season] = {};
-              if (!data.episodes[season][episode]) data.episodes[season][episode] = {};
-              if (!data.episodes[season][episode][quality]) data.episodes[season][episode][quality] = torrent;
-            }
-          });
+              if (!data.episodes[season]) {
+                data.episodes[season] = {}
+              }
 
-          page++;
-          return data;
-        });
-      }).then(value => data);
-    });
+              if (!data.episodes[season][episode]) {
+                data.episodes[season][episode] = {}
+              }
+
+              if (!data.episodes[season][episode][quality]) {
+                data.episodes[season][episode][quality] = torrent
+              }
+            }
+          })
+
+          page++
+          return data
+        })
+      }).then(value => data)
+    })
   }
 
 }
