@@ -24,7 +24,7 @@ describe('HorribleSubs', () => {
     }
   })
 
-  function testAnimeAttributes(anime) {
+  function testAnimeAttributes (anime) {
     expect(anime).to.be.an('object')
     expect(anime.link).to.be.a('string')
     expect(anime.slug).to.be.a('string')
@@ -62,5 +62,5 @@ describe('HorribleSubs', () => {
       done()
     }).catch(done)
   })
-
+  
 })
