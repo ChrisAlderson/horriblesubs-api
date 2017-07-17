@@ -4,17 +4,20 @@
   "description": "A horriblesubs.info API wrapper for NodeJS.",
   "dependencies": {
     "async-q": "^0.3.1",
-    "cheerio": "^1.0.0-rc.1",
+    "cheerio": "^1.0.0-rc.2",
     "cloudscraper": "^1.4.1",
-    "got": "^7.0.0"
+    "got": "^7.1.0"
   },
   "devDependencies": {
-    "chai": "^4.0.2",
+    "chai": "^4.1.0",
+    "coveralls": "^2.13.1",
+    "istanbul": "^0.4.5",
     "mocha": "^3.4.2"
   },
   "license": "MIT",
   "scripts": {
-    "test": "mocha --timeout 15000 --reporter spec"
+    "coveralls": "cat ./coverage/lcov.info | node node_modules/coveralls/bin/coveralls",
+    "test": "istanbul cover --report lcovonly ./node_modules/.bin/_mocha -- --timeout 30000 --reporter spec test/**"
   },
   "engines": {
     "node": ">=6.3.0"
