@@ -4,8 +4,7 @@ const { expect } = require('chai')
 const HorribleSubsAPI = require('../horriblesubs-api')
 
 describe('HorribleSubs', () => {
-
-  let horriblesubsAPI, oneSeason, multiSeasons
+  let horriblesubsAPI, oneSeason, multiSeasons, lowQuality
 
   before(() => {
     console.warn = () => {}
@@ -22,9 +21,14 @@ describe('HorribleSubs', () => {
       slug: 'ace-of-diamond-s2',
       title: 'Ace of Diamond Season Two'
     }
+    lowQuality = {
+      link: '/shows/one-piece/',
+      slug: 'one-piece',
+      title: 'One Piece'
+    }
   })
 
-  function testAnimeAttributes (anime) {
+  function testAnimeAttributes(anime) {
     expect(anime).to.be.an('object')
     expect(anime.link).to.be.a('string')
     expect(anime.slug).to.be.a('string')
@@ -44,6 +48,7 @@ describe('HorribleSubs', () => {
   })
 
   it('should get episodes of an anime with one season', done => {
+    horriblesubsAPI = new HorribleSubsAPI()
     horriblesubsAPI.getAnimeData(oneSeason).then(res => {
       testAnimeAttributes(res)
       expect(res.hs_showid).to.be.a('number')
@@ -62,5 +67,14 @@ describe('HorribleSubs', () => {
       done()
     }).catch(done)
   })
-  
+
+  it('should get episodes of an anime with low quality episodes', done => {
+    horriblesubsAPI.getAnimeData(lowQuality).then(res => {
+      testAnimeAttributes(res)
+      expect(res.hs_showid).to.be.a('number')
+      expect(res.episodes).to.be.an('object')
+
+      done()
+    }).catch(done)
+  })
 })
