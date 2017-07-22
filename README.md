@@ -18,19 +18,21 @@ npm install --save horriblesubs-api
 ```js
 const HorribleSubsAPI = require('horriblesubs-api')
 
-// Options are the request default options.
-const horriblesubsAPI = new HorribleSubsAPI({[options, debug, cloudflare]})
+const horriblesubs = new HorribleSubsAPI({[
+  baseUrl, // The base url of eztv. Defaults to 'https://horriblesubs.info/'
+  debug // Show extra output. Defaults to 'false'
+]})
 ```
 
 #### Example usage
 ```js
 // Get all available shows on horriblesubs.
-horriblesubsAPI.getAllAnime().then(res => {
+horriblesubs.getAllAnime().then(res => {
   const data = res[0]
   console.log(data)
 
   // Get data including episodes from horriblesubs.
-  horriblesubsAPI.getAnimeData(data)
+  horriblesubs.getAnimeData(data)
     .then(res => console.log(res))
 }).catch(err => console.error(err))
 ```
@@ -68,6 +70,17 @@ horriblesubsAPI.getAllAnime().then(res => {
       }
     }
 }
+```
+
+Nested within the `episodes` property there is the `season number`
+within the `season number` is the `episode number` and within the
+`episode number` are the different `qualities` of the torrent.
+
+## Testing
+
+You can run tests with the following npm command:
+```
+ $ npm test
 ```
 
 # License
