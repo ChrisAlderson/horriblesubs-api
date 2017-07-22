@@ -3,6 +3,7 @@
 // Import the neccesary modules.
 const HorribleSubsAPI = require('../horriblesubs-api')
 
+// Create a new instance of the module.
 const horriblesubsAPI = new HorribleSubsAPI()
 
 // Get all available shows on horriblesubs.

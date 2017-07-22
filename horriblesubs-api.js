@@ -1,17 +1,53 @@
 'use strict'
 
+// Import the necessary modules.
 const asyncq = require('async-q')
 const cheerio = require('cheerio')
 const got = require('got')
-const querystring = require('querystring')
+const { stringify } = require('querystring')
 
-module.exports = class HorribleSubsAPI {
+/**
+ * Anime object which will be returned.
+ * @typedef {Object} Anime
+ * @property {!string} link The link of the anime.
+ * @property {!string} slug The slug of the anime.
+ * @property {!string} title The name of the anime.
+ * @property {?number} hs_showid The HorribleSubs id of the anime.
+ * @property {?Object} episodes The episodes of the anime.
+ */
 
-  constructor({baseUrl = 'http://horriblesubs.info', debug = false} = {}) {
+/**
+ * A horriblesubs.info API wrapper for NodeJS.
+ * @type {HorribleSubsApi}
+ */
+// module.exports = class HorribleSubsApi {
+export default class HorribleSubsApi {
+
+  /**
+   * Create a new instance of the module.
+   * @param {!Object} config={} - The configuration object for the module.
+   * @param {!string} baseUrl=https://horriblesubs.info/ - The base url of
+   * horriblesubs.
+   * @param {?boolean} [debug=false] - Show extra output.
+   */
+  constructor({baseUrl = 'https://horriblesubs.info/', debug = false} = {}) {
+    /**
+     * The base url of horriblesubs.
+     * @type {string}
+     */
     this._baseUrl = baseUrl
+
+    /**
+     * Show extra output.
+     * @type {boolean}
+     */
     this._debug = debug
 
-    HorribleSubsAPI._horribleSubsMap = {
+    /**
+     * Maps the HorribleSubs slugs to trakt.tv slugs.
+     * @type {Object}
+     */
+    HorribleSubsApi._horribleSubsMap = {
       '91-days': 'ninety-one-days',
       'ace-attorney': 'gyakuten-saiban',
       'ace-of-diamond': 'diamond-no-ace',
@@ -212,19 +248,31 @@ module.exports = class HorribleSubsAPI {
     }
   }
 
-  _get(uri, query = {}) {
+  /**
+   * Make a get request to horriblesubs.info.
+   * @param {!string} endpoint - The endpoint to make the request to.
+   * @param {!Object} [query={}] - The querystring to send with the request.
+   * @returns {Promise<Function, Error>} - The response body wrapped in
+   * cheerio.
+   */
+  _get(endpoint, query = {}) {
+    const uri = `${this._baseUrl}${endpoint}`
+
     if (this._debug) {
-      console.warn(
-        `Making request to: '${uri}${querystring.stringify(query)}'`
-      )
+      console.warn(`Making request to: '${uri}?${stringify(query)}'`)
     }
 
-    return got.get(`${this._baseUrl}/${uri}`, { query })
+    return got.get(uri, { query })
       .then(({body}) => cheerio.load(body))
   }
 
+  /**
+   * Get all the available anime from horriblesubs.
+   * @return {Promise<Array<Anime>, Error>} - All the available anime from
+   * horriblesubs.
+   */
   getAllAnime() {
-    return this._get('/shows/').then($ => {
+    return this._get('shows/').then($ => {
       return $('div.ind-show.linkful').map(function () {
         const entry = $(this).find('a')
         return {
@@ -236,7 +284,13 @@ module.exports = class HorribleSubsAPI {
     })
   }
 
+  /**
+   * Get the id of an anime.
+   * @param {Anime} data - The anime to get id of.
+   * @returns {Promise<Anime, Error>} - A promise to get the id of.
+   */
   _getAnimeId(data) {
+    // console.log(data.link);
     return this._get(data.link).then($ => {
       const variable = 'var hs_showid = '
       const text = $('div.entry-content').find('script').html()
@@ -250,20 +304,22 @@ module.exports = class HorribleSubsAPI {
     })
   }
 
+  /**
+   * Get the episodes of an anime.
+   * @param {Anime} data - The anime to get episodes of.
+   * @returns {Promise<Anime, Error>} - A promise to get episodes of.
+   */
   getAnimeData(data) {
     return this._getAnimeId(data).then(res => {
       let busy = true
       let page = 0
 
-      const horribleSubsMap = HorribleSubsAPI._horribleSubsMap
       return asyncq.whilst(() => busy, () => {
-        const qs = {
+        return this._get('lib/getshows.php', {
           type: 'show',
           showid: res.hs_showid,
           nextid: page
-        }
-
-        return this._get('/lib/getshows.php', qs).then($ => {
+        }).then($ => {
           const table = $('table.release-table')
 
           if (table.length === 0) {
@@ -296,8 +352,8 @@ module.exports = class HorribleSubsAPI {
               .replace(/\s-\s/gi, ' ')
               .replace(/[+\s']/g, '-')
               .toLowerCase()
-            data.slug = data.slug in horribleSubsMap
-              ? horribleSubsMap[data.slug]
+            data.slug = data.slug in HorribleSubsApi._horribleSubsMap
+              ? HorribleSubsApi._horribleSubsMap[data.slug]
               : data.slug
 
             if (season && episode && quality && quality !== '360p') {
