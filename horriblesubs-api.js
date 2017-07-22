@@ -20,8 +20,7 @@ const { stringify } = require('querystring')
  * A horriblesubs.info API wrapper for NodeJS.
  * @type {HorribleSubsApi}
  */
-// module.exports = class HorribleSubsApi {
-export default class HorribleSubsApi {
+module.exports = class HorribleSubsApi {
 
   /**
    * Create a new instance of the module.
