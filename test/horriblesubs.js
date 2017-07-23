@@ -5,7 +5,7 @@ const { expect } = require('chai')
 const HorribleSubsApi = require('../horriblesubs-api')
 
 /** @test {HorribleSubsApi} */
-describe('HorribleSubs', () => {
+describe('HorribleSubsApi', () => {
   /**
    * The HorribleSubsApi instance.
    * @type {HorribleSubsApi}
