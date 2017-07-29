@@ -16,12 +16,12 @@ npm install --save horriblesubs-api
 
 #### Initialize
 ```js
-const HorribleSubsAPI = require('horriblesubs-api')
+const HorribleSubsApi = require('horriblesubs-api')
 
 // Create a new instance of the module.
-const horriblesubs = new HorribleSubsAPI({
-  baseUrl, // The base url of eztv. Defaults to 'https://horriblesubs.info/'
-  debug // Show extra output. Defaults to 'false'
+const horriblesubs = new HorribleSubsApi({
+  baseUrl, // The base url of horriblesubs. Defaults to 'https://horriblesubs.info/'.
+  debug // Show extra output. Defaults to 'false'.
 })
 ```
 

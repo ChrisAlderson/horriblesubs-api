@@ -9,9 +9,9 @@ const { stringify } = require('querystring')
 /**
  * Anime object which will be returned.
  * @typedef {Object} Anime
- * @property {!string} link The link of the anime.
- * @property {!string} slug The slug of the anime.
- * @property {!string} title The name of the anime.
+ * @property {string} link The link of the anime.
+ * @property {string} slug The slug of the anime.
+ * @property {string} title The name of the anime.
  * @property {?number} hs_showid The HorribleSubs id of the anime.
  * @property {?Object} episodes The episodes of the anime.
  */
