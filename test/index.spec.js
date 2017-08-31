@@ -1,6 +1,7 @@
 // Import the necessary modules.
 const { expect } = require('chai')
-const HorribleSubsApi = require('../horriblesubs-api')
+
+const HorribleSubsApi = require('..')
 
 /** @test {HorribleSubsApi} */
 describe('HorribleSubsApi', () => {

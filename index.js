@@ -328,19 +328,15 @@ module.exports = class HorribleSubsApi {
             const seasonal = /(.*).[Ss](\d)\s-\s(\d+)(?:v\d)?.\[(\d{3,4}p)\]/i
             const oneSeason = /(.*)\s-\s(\d+)(?:v\d)?.\[(\d{3,4}p)\]/i
 
-            const season = 1
+            let season = 1
             let episode
             let quality
 
             const label = entry.find('td.dl-label').text()
-            if (label.match(seasonal)) {
-              data.slug = label.match(seasonal)[1]
-              episode = parseInt(label.match(seasonal)[3], 10)
-              quality = label.match(seasonal)[4]
+            if (seasonal.test(label)) {
+              [ data.slug, season, episode, quality ] = label.match(seasonal)
             } else {
-              data.slug = label.match(oneSeason)[1]
-              episode = parseInt(label.match(oneSeason)[2], 10)
-              quality = label.match(oneSeason)[3]
+              [ data.slug, episode, quality ] = label.match(oneSeason)
             }
 
             data.slug = data.slug.replace(/[,!]/gi, '')

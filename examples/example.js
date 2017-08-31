@@ -1,6 +1,6 @@
 // Import the neccesary modules.
 /* eslint-disable no-console */
-const HorribleSubsAPI = require('../horriblesubs-api')
+const HorribleSubsAPI = require('..')
 
 // Create a new instance of the module.
 const horriblesubs = new HorribleSubsAPI()

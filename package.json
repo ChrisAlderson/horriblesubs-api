@@ -33,7 +33,7 @@
     "torrents",
     "api"
   ],
-  "main": "horriblesubs-api.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ChrisAlderson/horriblesubs-api.git"
