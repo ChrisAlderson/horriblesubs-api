@@ -1,6 +1,5 @@
-'use strict'
-
 // Import the neccesary modules.
+/* eslint-disable no-console */
 const HorribleSubsAPI = require('../horriblesubs-api')
 
 // Create a new instance of the module.

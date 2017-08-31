@@ -1,10 +1,11 @@
-'use strict'
-
 // Import the necessary modules.
 const asyncq = require('async-q')
+const debug = require('debug')
 const cheerio = require('cheerio')
 const got = require('got')
 const { stringify } = require('querystring')
+
+const { name } = require('./package')
 
 /**
  * Anime object which will be returned.
@@ -27,20 +28,18 @@ module.exports = class HorribleSubsApi {
    * @param {!Object} config={} - The configuration object for the module.
    * @param {!string} baseUrl=https://horriblesubs.info/ - The base url of
    * horriblesubs.
-   * @param {?boolean} [debug=false] - Show extra output.
    */
-  constructor({baseUrl = 'https://horriblesubs.info/', debug = false} = {}) {
+  constructor({baseUrl = 'https://horriblesubs.info/'} = {}) {
     /**
      * The base url of horriblesubs.
      * @type {string}
      */
     this._baseUrl = baseUrl
-
     /**
      * Show extra output.
-     * @type {boolean}
+     * @type {Function}
      */
-    this._debug = debug
+    this._debug = debug(name)
 
     /**
      * Maps the HorribleSubs slugs to trakt.tv slugs.
@@ -256,10 +255,7 @@ module.exports = class HorribleSubsApi {
    */
   _get(endpoint, query = {}) {
     const uri = `${this._baseUrl}${endpoint}`
-
-    if (this._debug) {
-      console.warn(`Making request to: '${uri}?${stringify(query)}'`)
-    }
+    this._debug(`Making request to: '${uri}?${stringify(query)}'`)
 
     return got.get(uri, { query })
       .then(({body}) => cheerio.load(body))

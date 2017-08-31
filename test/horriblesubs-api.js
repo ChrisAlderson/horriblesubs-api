@@ -1,5 +1,3 @@
-'use strict'
-
 // Import the necessary modules.
 const { expect } = require('chai')
 const HorribleSubsApi = require('../horriblesubs-api')
@@ -31,9 +29,6 @@ describe('HorribleSubsApi', () => {
   let lowQuality
 
   before(() => {
-    // Disable the warn logging function to testing.
-    console.warn = () => {}
-
     horriblesubs = new HorribleSubsApi({
       debug: true
     })
