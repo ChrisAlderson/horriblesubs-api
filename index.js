@@ -1,8 +1,8 @@
 // Import the necessary modules.
-const asyncq = require('async-q')
 const debug = require('debug')
 const cheerio = require('cheerio')
 const got = require('got')
+const pWhilst = require('p-whilst')
 const { stringify } = require('querystring')
 
 const { name } = require('./package')
@@ -285,7 +285,6 @@ module.exports = class HorribleSubsApi {
    * @returns {Promise<Anime, Error>} - A promise to get the id of.
    */
   _getAnimeId(data) {
-    // console.log(data.link);
     return this._get(data.link).then($ => {
       const variable = 'var hs_showid = '
       const text = $('div.entry-content').find('script').html()
@@ -309,7 +308,7 @@ module.exports = class HorribleSubsApi {
       let busy = true
       let page = 0
 
-      return asyncq.whilst(() => busy, () => {
+      return pWhilst(() => busy, () => {
         return this._get('lib/getshows.php', {
           type: 'show',
           showid: res.hs_showid,
@@ -334,9 +333,11 @@ module.exports = class HorribleSubsApi {
 
             const label = entry.find('td.dl-label').text()
             if (seasonal.test(label)) {
-              [ data.slug, season, episode, quality ] = label.match(seasonal)
+              [ , season, episode, quality ] = label.match(seasonal)
+            } else if (oneSeason.test(label)) {
+              [ , , episode, quality ] = label.match(oneSeason)
             } else {
-              [ data.slug, episode, quality ] = label.match(oneSeason)
+              return
             }
 
             data.slug = data.slug.replace(/[,!]/gi, '')
@@ -347,32 +348,30 @@ module.exports = class HorribleSubsApi {
               ? HorribleSubsApi._horribleSubsMap[data.slug]
               : data.slug
 
-            if (season && episode && quality && quality !== '360p') {
-              if (!data.episodes) {
-                data.episodes = {}
-              }
-
-              if (!data.episodes[season]) {
-                data.episodes[season] = {}
-              }
-
-              if (!data.episodes[season][episode]) {
-                data.episodes[season][episode] = {}
-              }
-
-              const magnet = entry.find('td.dl-type.hs-magnet-link')
-                .find('a')
-                .attr('href')
-
-              const torrent = {
-                url: magnet,
-                seeds: 0,
-                peers: 0,
-                provider: 'HorribleSubs'
-              }
-
-              data.episodes[season][episode][quality] = torrent
+            if (!data.episodes) {
+              data.episodes = {}
             }
+
+            if (!data.episodes[season]) {
+              data.episodes[season] = {}
+            }
+
+            if (!data.episodes[season][episode]) {
+              data.episodes[season][episode] = {}
+            }
+
+            const magnet = entry.find('td.dl-type.hs-magnet-link')
+              .find('a')
+              .attr('href')
+
+            const torrent = {
+              url: magnet,
+              seeds: 0,
+              peers: 0,
+              provider: 'HorribleSubs'
+            }
+
+            data.episodes[season][episode][quality] = torrent
           })
 
           page++

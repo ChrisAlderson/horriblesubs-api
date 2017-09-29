@@ -6,16 +6,18 @@
     "async-q": "^0.3.1",
     "cheerio": "^1.0.0-rc.2",
     "cloudscraper": "^1.4.1",
-    "debug": "^3.0.1",
-    "got": "^7.1.0"
+    "debug": "^3.1.0",
+    "got": "^7.1.0",
+    "p-map": "^1.2.0",
+    "p-whilst": "^1.0.0"
   },
   "devDependencies": {
-    "chai": "^4.1.1",
-    "coveralls": "^2.13.1",
-    "eslint": "^4.5.0",
+    "chai": "^4.1.2",
+    "coveralls": "^3.0.0",
+    "eslint": "^4.7.2",
     "eslint-config-vixo": "^2.0.0",
-    "mocha": "^3.5.0",
-    "nyc": "^11.1.0"
+    "mocha": "^3.5.3",
+    "nyc": "^11.2.1"
   },
   "license": "MIT",
   "scripts": {

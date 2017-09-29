@@ -24,10 +24,10 @@ describe('HorribleSubsApi', () => {
   let multiSeasons
 
   /**
-   * An anime with low quality episodes.
+   * An anime without episodes.
    * @type {Anime}
    */
-  let lowQuality
+  let noEpisodes
 
   before(() => {
     horriblesubs = new HorribleSubsApi({
@@ -35,19 +35,23 @@ describe('HorribleSubsApi', () => {
     })
 
     oneSeason = {
-      link: '/shows/mangirl',
-      slug: 'mangirl',
-      title: 'Mangirl!'
+      link: '/shows/91-days',
+      slug: '91-days',
+      title: '91 Days'
     }
     multiSeasons = {
       link: '/shows/ace-of-diamond-s2/',
       slug: 'ace-of-diamond-s2',
       title: 'Ace of Diamond Season Two'
     }
-    lowQuality = {
-      link: '/shows/one-piece/',
-      slug: 'one-piece',
-      title: 'One Piece'
+    noEpisodes = {
+      link: '/shows/3-gatsu-no-lion',
+      slug: '3-gatsu-no-lion',
+      title: '3-gatsu no Lion'
+    }
+
+    HorribleSubsApi._horribleSubsMap = {
+      '91-days': 'ninety-one-days'
     }
   })
 
@@ -99,9 +103,9 @@ describe('HorribleSubsApi', () => {
     }).catch(done)
   })
 
-  /** @test {HorribleSubsApi#getAnimeData} */
-  it('should get episodes of an anime with low quality episodes', done => {
-    horriblesubs.getAnimeData(lowQuality).then(res => {
+  /** @test {HorribleSubsApi@getAnimeData} */
+  it('should get episodes of an anime with no episodes', done => {
+    horriblesubs.getAnimeData(noEpisodes).then(res => {
       testAnimeAttributes(res)
       expect(res.hs_showid).to.be.a('number')
       expect(res.episodes).to.be.an('object')
@@ -109,4 +113,15 @@ describe('HorribleSubsApi', () => {
       done()
     }).catch(done)
   })
+
+  /** @test {HorribleSubsApi#getAnimeData} */
+  /* it('should get episodes of an anime with low quality episodes', done => {
+    horriblesubs.getAnimeData(lowQuality).then(res => {
+      testAnimeAttributes(res)
+      expect(res.hs_showid).to.be.a('number')
+      expect(res.episodes).to.be.an('object')
+
+      done()
+    }).catch(done)
+  }) */
 })
