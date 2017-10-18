@@ -1,6 +1,6 @@
 {
   "name": "horriblesubs-api",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A horriblesubs.info API wrapper for NodeJS.",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
