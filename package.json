@@ -3,9 +3,7 @@
   "version": "1.0.7",
   "description": "A horriblesubs.info API wrapper for NodeJS.",
   "dependencies": {
-    "async-q": "^0.3.1",
     "cheerio": "^1.0.0-rc.2",
-    "cloudscraper": "^1.4.1",
     "debug": "^3.1.0",
     "got": "^7.1.0",
     "p-map": "^1.2.0",
@@ -14,9 +12,9 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
-    "eslint": "^4.7.2",
+    "eslint": "^4.9.0",
     "eslint-config-vixo": "^2.0.0",
-    "mocha": "^3.5.3",
+    "mocha": "^4.0.1",
     "nyc": "^11.2.1"
   },
   "license": "MIT",
