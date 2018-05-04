@@ -1,9 +1,18 @@
 # horriblesubs-api
 
-[![Build Status](https://travis-ci.org/ChrisAlderson/horriblesubs-api.svg?branch=master)](https://travis-ci.org/ChrisAlderson/horriblesubs-api)
-[![Coverage Status](https://coveralls.io/repos/github/ChrisAlderson/horriblesubs-api/badge.svg?branch=master)](https://coveralls.io/github/ChrisAlderson/horriblesubs-api?branch=master)
-[![Dependency Status](https://david-dm.org/ChrisAlderson/horriblesubs-api.svg)](https://david-dm.org/ChrisAlderson/horriblesubs-api)
-[![devDependency Status](https://david-dm.org/ChrisAlderson/horriblesubs-api/dev-status.svg)](https://david-dm.org/ChrisAlderson/horriblesubs-api#info=devDependencies)
+[![Build Status][travis-image]][travis-url]
+[![Coverage Status][coverage-image]][coverage-url]
+[![Dependency Status][david-image]][david-url]
+[![devDependency Status][dev-david-image]][dev-david-url]
+
+[travis-url]: https://travis-ci.org/ChrisAlderson/horriblesubs-apii
+[travis-image]: https://travis-ci.org/ChrisAlderson/horriblesubs-apii.svg?branch=master
+[coverage-url]: https://coveralls.io/github/ChrisAlderson/horriblesubs-apii?branch=master
+[coverage-image]: https://coveralls.io/repos/github/ChrisAlderson/horriblesubs-apii/badge.svg?branch=master
+[david-url]: https://david-dm.org/ChrisAlderson/horriblesubs-apii
+[david-image]: https://david-dm.org/ChrisAlderson/horriblesubs-apii.svg
+[dev-david-url]: https://david-dm.org/ChrisAlderson/horriblesubs-apii?type=dev
+[dev-david-image]: https://david-dm.org/ChrisAlderson/horriblesubs-apii/dev-status.svg
 
 An HorribleSubs API wrapper to get data from [horriblesubs.info](https://horriblesubs.info/).
 
