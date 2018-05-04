@@ -5,17 +5,17 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "debug": "^3.1.0",
-    "got": "^8.0.1",
+    "got": "^8.3.1",
     "p-map": "^1.2.0",
     "p-whilst": "^1.0.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "coveralls": "^3.0.0",
-    "eslint": "^4.15.0",
+    "coveralls": "^3.0.1",
+    "eslint": "^4.19.1",
     "eslint-config-vixo": "^2.0.2",
-    "mocha": "^4.1.0",
-    "nyc": "^11.4.1"
+    "mocha": "^5.1.1",
+    "nyc": "^11.7.1"
   },
   "license": "MIT",
   "scripts": {
